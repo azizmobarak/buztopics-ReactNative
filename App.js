@@ -1,21 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Search from './app/search';
+import Settings from './app/settings';
+import Home from './app/home';
+import {NavigationContainer} from '@react-navigation/native';
+import Contactus from './app/contactus';
 
+
+
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import Drawer_Content from './app/drawer';
+
+const drawer=createDrawerNavigator();
+
+ 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+return (
+    <DrawerApply/>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const DrawerApply=()=>(
+  <NavigationContainer>
+      <drawer.Navigator drawerContent={(props)=><Drawer_Content {...props}/>} initialRouteName="Home">
+      <drawer.Screen name="Home"
+       component={Home}
+         options={
+           {title:"BuzTopics",}
+         }
+  
+       />
+      <drawer.Screen name="Settings" component={Settings} />
+      <drawer.Screen name="Search" component={Search} />
+      <drawer.Screen name="Contact" component={Contactus}/>
+      </drawer.Navigator>
+  </NavigationContainer>
+)
+
