@@ -10,9 +10,10 @@ export default function Search({route,navigation}) {
 
     const [data,setdata]=useState([]);
     const [key,setkey]=useState('');
+    const [isLoading,setLoading]=useState(false);
 
 useEffect(()=>{
-    console.log(key)
+    setLoading(true)
     //get data 
  fetch(Endpoint+key+"&apiKey=099a9e2e1ec54fbf82af805493521962")
  .then(res=>res.json())
@@ -32,6 +33,7 @@ useEffect(()=>{
    }
 
    setdata(tab);
+   setLoading(false)
  })
  .catch(e=>setdata([]));
 },[key])
@@ -52,7 +54,13 @@ useEffect(()=>{
             <View style={styles.container_from_top}>
             <TextInput value={key} onChangeText={setkey} style={styles.search_inp} placeholder="Search for something!" />
             <View style={{padding:2}}>
-            <Listposts data={data} location="search" />
+            {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+      </View> 
+      :
+     <Listposts data={data} location={"usa"} />}
             </View>
             </View>
         )

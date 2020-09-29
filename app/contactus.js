@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Button,TextInput ,Text, Avatar} from 'react-native-paper'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { Textarea } from 'native-base'
 
 export default function Contactus({navigation}) {
     return (
@@ -21,11 +21,11 @@ export default function Contactus({navigation}) {
                      />
                 </View>
                 <View style={styles.form_elem}>
-                    <TextInput
-                     multiline={true}
-                      numberOfLines={4} 
-                       style={{height:150,justifyContent:"flex-start",backgroundColor:"white"}}
-                       placeholder="Message" />
+                    <Textarea
+                        rowSpan={4}
+                        placeholder="Message"
+                        style={{backgroundColor:"#fff",height:300}}
+                    />
                 </View>
                 <View style={styles.form_elem}>
                     <Button

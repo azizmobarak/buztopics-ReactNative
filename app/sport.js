@@ -8,9 +8,11 @@ import {Avatar} from 'react-native-paper';
 export default function Sport() {
 
     const [data,setdata]=useState([]);
+    const [isLoading,setLoading]=useState(false);
 
     useEffect(()=>{
       //get data 
+      setLoading(true);
      fetch(api.sport)
       .then(res=>res.json())
       .then(data=>{
@@ -29,6 +31,7 @@ export default function Sport() {
         }
     
         setdata(tab);
+        setLoading(false)
       })
       .catch(e=>[]);
     },[""]);  
@@ -37,7 +40,13 @@ export default function Sport() {
         <View style={styles.container}>
             <Avatar.Image source={require('../assets/sport.png')}/>
             <View style={{marginBottom:"15%"}}>
-                <Listposts data={data} location="sport"  />
+            {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+      </View> 
+      :
+     <Listposts data={data} location={"sport"} />}
             </View>
         </View>
     )

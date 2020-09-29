@@ -4,28 +4,27 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Listposts from './List_posts';
 
 export default function Loved() {
-
   const deleteList=()=>{
-   try{
-   Alert.alert("Confirm","do you want to delete all items?",[
-     {
-       text:"OK",
-       onPress:()=>{AsyncStorage.removeItem('favorite');ToastAndroid.show("all items has deleted",ToastAndroid.SHORT)}
-     },
-     {
-       text:"Cancel",
-       onPress:()=>("")
-     }
-   ]);
-   }catch{
- console.log("err");
-   }
+    try{
+      Alert.alert("Confirm","do you want to delete all items?",[
+        {
+          text:"OK",
+          onPress:()=>{AsyncStorage.removeItem('favorite');ToastAndroid.show("all items has deleted",ToastAndroid.SHORT)}
+        },
+        {
+          text:"Cancel",
+          onPress:()=>("")
+        }
+      ]);
+      setLoading(false)
+    }catch{
+    }
   }
+  
 
-
-
-    return (
-        <View style={{flex:1,alignItems:"center"}}>
+  
+  return (
+    <View style={{flex:1,alignItems:"center"}}>
            <View style={styles.topbar}>
            <Text style={styles.title}>You liked this<Icon name="heart" size={24} color="red" /> </Text> 
            <TouchableHighlight onPress={()=>deleteList()}>
@@ -35,14 +34,16 @@ export default function Loved() {
            <Getlist/>      
         </View>
     )
-}
-
-
-const Getlist=()=>{
-
-  const [list,set_list]=useState([]);
-
+  }
+  
+  
+  const Getlist=()=>{
+    
+    const [list,set_list]=useState([]);
+    const [isLoading,setLoading]=useState(false);
+    
   const getdata=async()=>{
+    setLoading(true);
     try {
       var tab = await AsyncStorage.getItem('favorite');
       var parsed = JSON.parse(tab);
@@ -54,6 +55,7 @@ const Getlist=()=>{
      }catch(e){
         set_list([])
      }
+     setLoading(false);
   }
 
 
@@ -62,6 +64,17 @@ useEffect(()=>{
 },[""]);
 
     return (
+      isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+      </View>
+      :
+      list.length==0?
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:30}} >No posts saved here!</Text>
+      </View>
+      :
       <Listposts data={list} location={"loved"} />
     )
 }

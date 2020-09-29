@@ -1,12 +1,14 @@
 import React from 'react'
 import { View } from 'native-base'
-import { StyleSheet,ProgressBarAndroid,ProgressViewIOS } from 'react-native';
+import { StyleSheet, ProgressViewIOS} from 'react-native';
 import { FlatList,Image,AsyncStorage,Text,TouchableHighlight,ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Progress from 'react-native-progress';
 
 export default function Listposts(props){
 
 const location = props.location;
+
 
 const isliked =async(title)=>{
   try{
@@ -25,10 +27,9 @@ return data.find(item=>item.title===title);
     //Error : the image inside require need to be dynamic.
     renderItem={({item})=>{
 
+
+      
      return (
-       props.data.length==0 ?
-       <Text style={{fontSize:44,color:"black"}}>Loading ...</Text>
-       :
        <View
       style={styles.item}>
     <Image style={{width:"100%",height:200}} source={{uri:item.img}}/>

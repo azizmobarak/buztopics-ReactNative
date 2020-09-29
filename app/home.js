@@ -111,10 +111,11 @@ const [show_modal,set_show_modal]=useState(false);
 const Main=({navigation})=>{
 
   const [data,setdata]=useState([]);
-
+ const [isLoading,setLoading]=useState(false);
 
 
 useEffect(()=>{
+  setLoading(true);
   //get data 
  fetch(api.all)
   .then(res=>res.json())
@@ -134,6 +135,7 @@ useEffect(()=>{
     }
 
     setdata(tab);
+    setLoading(false);
   })
   .catch(e=>[]);
 },[""]);
@@ -163,7 +165,13 @@ return(
      </View>
     
      <View style={styles.home_bottom}>
-     <LisPosts data={data} location={"home"} />
+     {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+      </View> 
+      :
+     <LisPosts data={data} location={"home"} />}
      </View>
     </View>
 )

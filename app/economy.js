@@ -8,8 +8,10 @@ import {Avatar} from 'react-native-paper';
 export default function Economy() {
 
     const [data,setdata]=useState([]);
+    const [isLoading,setLoading]=useState(false);
 
     useEffect(()=>{
+      setLoading(true)
       //get data 
      fetch(api.eco)
       .then(res=>res.json())
@@ -29,6 +31,7 @@ export default function Economy() {
         }
     
         setdata(tab);
+        setLoading(false)
       })
       .catch(e=>[]);
     },[""]);  
@@ -37,7 +40,13 @@ export default function Economy() {
         <View style={styles.container}>
             <Avatar.Image source={require('../assets/dollar.png')}/>
             <View style={{marginBottom:"15%"}}>
-                <Listposts data={data} location="economy"  />
+            {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+      </View> 
+      :
+     <Listposts data={data} location={"economy"} />}
             </View>
         </View>
     )

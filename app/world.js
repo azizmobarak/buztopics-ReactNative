@@ -9,9 +9,11 @@ export default function World() {
 
     const [data,setdata]=useState([]);
     const [country,setcountry]=useState('fr');
+    const [isLoading,setLoading]=useState(false);
 
     useEffect(()=>{
       //get data 
+      setLoading(true);
      fetch("http://newsapi.org/v2/top-headlines?country="+country+"&apiKey=099a9e2e1ec54fbf82af805493521962")
       .then(res=>res.json())
       .then(data=>{
@@ -30,6 +32,7 @@ export default function World() {
         }
     
         setdata(tab);
+        setLoading(false);
       })
       .catch(e=>[]);
     },[country]);  
@@ -51,7 +54,13 @@ export default function World() {
           <Picker.Item label="sweden"  value="se" />
            </Picker>
             <View style={{marginBottom:"15%"}}>
-                <Listposts data={data} location="sport"  />
+          {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+      </View> 
+      :
+     <Listposts data={data} location={"usa"} />}
             </View>
         </View>
     )

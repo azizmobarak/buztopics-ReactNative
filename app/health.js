@@ -8,9 +8,11 @@ import {Avatar} from 'react-native-paper';
 export default function Health() {
 
     const [data,setdata]=useState([]);
+    const [isLoading,setLoading]=useState(false);
 
     useEffect(()=>{
       //get data 
+      setLoading(true)
      fetch(api.health)
       .then(res=>res.json())
       .then(data=>{
@@ -29,6 +31,7 @@ export default function Health() {
         }
     
         setdata(tab);
+        setLoading(false)
       })
       .catch(e=>[]);
     },[""]);  
@@ -37,7 +40,13 @@ export default function Health() {
         <View style={styles.container}>
             <Avatar.Image style={{backgroundColor:"transparent"}} source={require('../assets/health.png')}/>
             <View style={{marginBottom:"15%"}}>
-                <Listposts data={data} location="usa"  />
+            {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text style={{color:"blue",fontSize:22}}>Please wait ...</Text>
+      </View> 
+      :
+     <Listposts data={data} location={"health"} />}
             </View>
         </View>
     )
