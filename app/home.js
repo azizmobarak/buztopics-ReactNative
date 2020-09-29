@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, Modal,Alert,TouchableHighlight  } from 'react-native';
 import Settings from './settings';
 import Search from './search';
-import { Button, Avatar } from 'react-native-paper';
-import { TouchableHighlight } from 'react-native';
-import { FlatList,Image,AsyncStorage } from 'react-native';
+import { Avatar } from 'react-native-paper';
 import Contactus from './contactus';
 import Loved from './loved';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LisPosts from './List_posts';
+import Developer from './developer';
+import USA from './usa';
+import Health from './health';
+import Economy from './economy';
 
-
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, HeaderTitle} from '@react-navigation/stack';
+import { api } from '../api.config';
+import Sport from './sport';
+import World from './world';
 const stack = createStackNavigator();
 
 export default function Home({navigation}){
+const [show_modal,set_show_modal]=useState(false);
 
     return (
       <stack.Navigator 
@@ -22,14 +27,14 @@ export default function Home({navigation}){
          headerMode="screen"
          screenOptions={
            
-           {headerTitle:"BuzTopics",
+           {headerTitle:<Text style={{color:"rgb(100,23,222)"}}>WhatTheySay</Text>,
            headerLeft:()=>(
                <TouchableHighlight style={styles.menu_btn} underlayColor="white" onPress={()=>navigation.openDrawer()}>
                  <Avatar.Icon icon="menu" size={30} />
                </TouchableHighlight>
            ),
            headerRight:()=>(
-             <TouchableHighlight style={styles.menu_btn} underlayColor="white" onPress={()=>openmodal()}>
+             <TouchableHighlight style={styles.menu_btn} underlayColor="white" onPress={()=>navigation.navigate('Search',{from:"top"})}>
                  <Avatar.Image style={{backgroundColor:"white"}} source={require('../assets/marketing.png')} size={30} />
                </TouchableHighlight>
            )
@@ -37,40 +42,128 @@ export default function Home({navigation}){
          }
          >
           <stack.Screen name="Home" component={Main}/>
-          <stack.Screen name="Settings" component={Settings} />
-          <stack.Screen name="Search" component={Search}/>
-          <stack.Screen name="Contact" component={Contactus}/>
-          <stack.Screen name="Loved" component={Loved}/>
+          <stack.Screen name="Settings" component={Settings}
+          options={
+            {
+            headerTitle:"Settings",
+          }}
+           />
+          <stack.Screen name="Search" component={Search}
+           options={
+            {
+            headerTitle:"Search",
+          }}
+
+          />
+          <stack.Screen name="Contact" component={Contactus}
+           options={
+            {
+            headerTitle:"Contact",
+          }}
+
+          />
+          <stack.Screen name="Loved" component={Loved}
+            options={
+            {
+            headerTitle:"Loved list",
+          }}
+          />
+          <stack.Screen name="Developer" component={Developer}
+            options={
+            {
+            headerTitle:"About developer",
+          }}
+          />
+           <stack.Screen name="USA" component={USA}
+            options={
+            {
+            headerTitle:<Text style={{fontFamily:"serif",fontSize:22,fontWeight:"bold"}}>USA</Text>,
+          }}
+          />
+           <stack.Screen name="Health" component={Health}
+            options={
+            {
+            headerTitle:<Text style={{fontFamily:"serif",fontSize:22,fontWeight:"bold"}}>Health</Text>,
+          }}
+          />
+           <stack.Screen name="Sport" component={Sport}
+            options={
+            {
+            headerTitle:<Text style={{fontFamily:"serif",fontSize:22,fontWeight:"bold"}}>Sport</Text>,
+          }}
+          />
+          <stack.Screen name="Economy" component={Economy}
+            options={
+            {
+            headerTitle:<Text style={{fontFamily:"serif",fontSize:22,fontWeight:"bold"}}>Economy</Text>,
+          }}
+          />
+          <stack.Screen name="World" component={World}
+            options={
+            {
+            headerTitle:<Text style={{fontFamily:"serif",fontSize:22,fontWeight:"bold"}}>World</Text>,
+          }}
+          />
          </stack.Navigator>
     );
 }
 
 const Main=({navigation})=>{
+
+  const [data,setdata]=useState([]);
+
+
+
+useEffect(()=>{
+  //get data 
+ fetch(api.all)
+  .then(res=>res.json())
+  .then(data=>{
+    var tab=[];
+    if(data.status==="ok"){
+      {
+      data.articles.map(item=>{
+       {
+        tab.push({title : item.title,
+          description :item.description, 
+          url : item.url,
+          img :item.urlToImage})    
+      }
+      })
+      }
+    }
+
+    setdata(tab);
+  })
+  .catch(e=>[]);
+},[""]);
+
+
 return(
     <View style={styles.container}>
      <View style={styles.home_top}>
 
      <View style={styles.row}>
       <View style={styles.column}>
-      {avatar_touchable(require('../assets/cloud-coding.png'),'Learn to code',{navigation},'Developer')}
+      {avatar_touchable(require('../assets/us.png'),'usa News',{navigation},'USA')}
       </View>
       <View style={styles.column}>
-      {avatar_touchable(require('../assets/contact-us.png'),'contact us',{navigation},'Contact')}
+      {avatar_touchable(require('../assets/profits.png'),'Economy $',{navigation},'Economy')}
       </View>
      </View>
 
      <View style={styles.row}>
       <View style={styles.column}>
-      {avatar_touchable(require('../assets/glasses.png'),'look around',{navigation},'Search')}
+      {avatar_touchable(require('../assets/glasses.png'),"Let's Search",{navigation},'Search')}
       </View>
       <View style={styles.column}>
-      {avatar_touchable(require('../assets/marketing.png'),'suggestions',{navigation},'Suggestions')}
+      {avatar_touchable(require('../assets/health.png'),'Health',{navigation},'Health')}
       </View>
      </View>
      </View>
     
      <View style={styles.home_bottom}>
-      {list_posts()}
+     <LisPosts data={data} location={"home"} />
      </View>
     </View>
 )
@@ -96,7 +189,7 @@ const styles = StyleSheet.create({
     flex:0.4,
     backgroundColor:"rgb(100,23,222)",
     justifyContent:"center",
-    alignItems:"center"
+    alignItems:"center",
   },
   home_bottom:{
     flex:1,
@@ -130,29 +223,12 @@ const styles = StyleSheet.create({
     fontFamily:"serif",
     fontWeight:'bold'
   },
-  item:{
-  marginLeft:2,
-  marginBottom:3,
-  backgroundColor:"rgb(100,23,222)",
-  padding:10,
-  },
-  text:{
-    color:"#fff",
-    fontFamily:"serif"
-  },
-  item_bottom_bar:{
-    flex:1,
-    flexDirection:"row",
-    justifyContent:'space-between',
-    alignItems:"center",
-    padding:2
-  }
   
   });
 
   const avatar_touchable=(url,text,{navigation},page)=>{
     return(
-      <TouchableHighlight onPress={()=>navigation.navigate(page)} underlayColor="white">
+      <TouchableHighlight onPress={()=>navigation.navigate(page,{from:'home'})} underlayColor="white">
       <View style={styles.inside_col_avatar}>
       <Avatar.Image 
       style={{backgroundColor:"white"}} 
@@ -166,77 +242,4 @@ const styles = StyleSheet.create({
   }
 
 
-  const list_posts=()=>{
-
-    const [color,set_color]=useState('')
-
-    return(
-      <FlatList
-    keyExtractor={(Item)=>Item.title}
-    numColumns={2}
-    data={[
-      {title:"hello",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"the second one",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other title1",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other title2",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other title3",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other title4",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other titles",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other titled",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other titlea",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other titlez",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other titler",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"},
-      {title:"some other titlef",description:"this is a little words about",url:"https://reactnative.dev/img/tiny_logo.png"}
-    ]}
-    //Error : the image inside require need to be dynamic.
-    renderItem={({item})=>{
-     return (
-     <View
-      style={styles.item}>
-    <Image style={{width:"100%",height:100}} source={{uri:item.url}}/>
-      <Text style={styles.text}>{item.title}</Text>
-      <Text style={styles.text}>{item.description}</Text>
-      <View style={styles.item_bottom_bar}>
-        <TouchableHighlight
-        >
-        <Icon name="share" size={24} color="white" />
-        </TouchableHighlight>
-        <TouchableHighlight
-        onPress={()=>add_loved(item.title,item.url,item.description)}
-        >
-        <Icon name="heart" size={24} color="white"/>
-        </TouchableHighlight>
-      </View>
-    </View>)}}
-     />
-    )
-  }
-
-  const tab=[];
-const add_loved=async(title,url,description)=>{
-var obj ={
-  title:title,
-  url:url,
-  description:description
-}
-tab.push(obj);
-await AsyncStorage.setItem('favorite',JSON.stringify(tab));
-
-}
-
-const verify_loved=async(title)=>{
-  await AsyncStorage.getItem('favorite',(err,res)=>{
-    if(err) console.log(err);
-      else{
-  var arr = JSON.parse(res);
-    arr.map((item)=>{
-      console.log(item.title)
-      if(item.title===title){
-        return true;
-      }else{
-        return false;
-      }
-    })
-      }
-    });
-}
+  
