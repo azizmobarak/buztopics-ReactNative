@@ -1,42 +1,69 @@
-import React from 'react'
-import { View } from 'native-base'
-import { StyleSheet, ProgressViewIOS} from 'react-native';
-import { FlatList,Image,AsyncStorage,Text,TouchableHighlight,ToastAndroid } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet,Share} from 'react-native';
+import { Button,View,FlatList,Image,AsyncStorage,Text,TouchableHighlight,ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as Progress from 'react-native-progress';
+import {WebView} from 'react-native-webview';
+import {useTheme} from '@react-navigation/native';
+import { BannerAd4 } from '../ads';
+
+
 
 export default function Listposts(props){
 
 const location = props.location;
+const [uri,seturi]=useState('empty');
+const {colors} = useTheme();
 
 
-const isliked =async(title)=>{
-  try{
-const data = await JSON.parse(AsyncStorage.getItem('favorite'));
-return data.find(item=>item.title===title);
-  }catch{
-   return "undefined";
-  }
+const shareTo=async(desc,url)=>{
+    try {
+      const result = await Share.share({
+        message:
+          desc +"click here for more "+url+"\n"+"for more News install BuzTopics Application available on PlayStore",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+       
+      }
+    } catch (error) {
+      alert(error.message);
+    }
 }
 
+var counter =0;
     return(
+      uri==="empty" ?
       <FlatList
     keyExtractor={(Item)=>Item.title}
     numColumns={2}
     data={props.data}
     //Error : the image inside require need to be dynamic.
-    renderItem={({item})=>{
-
-
-      
-     return (
-       <View
-      style={styles.item}>
+    renderItem={({item,index})=>{ 
+     return (    
+      <View
+      style={{
+        marginLeft:2,
+        marginBottom:3,
+        backgroundColor:colors.card,
+        padding:10,
+        maxWidth:'50%'
+      }}>
     <Image style={{width:"100%",height:200}} source={{uri:item.img}}/>
+    <TouchableHighlight
+       onPress={()=>seturi(item.url)}>
+      <View>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.description}>{item.description}</Text>
+      </View>
+    </TouchableHighlight>
       <View style={styles.item_bottom_bar}>
         <TouchableHighlight
+        onPress={()=>shareTo(item.description,item.url)}
         >
         <Icon name="share" size={24} color="white" />
         </TouchableHighlight>
@@ -46,9 +73,6 @@ return data.find(item=>item.title===title);
         {location!="loved"? 
         <Icon name="heart" size={24} color="white"/>
         :
-          typeof isliked(item.title)==="undefined" ? 
-          <Icon name="heart" size={24} color="white"/>
-          :
           <Icon name="heart" size={24} color="red"/>
         }
         </TouchableHighlight>
@@ -56,6 +80,13 @@ return data.find(item=>item.title===title);
     </View>
      )}}
      />
+
+    :
+     <View style={{width:"100%",height:"100%"}}>
+   <WebView source={{ uri:uri}} style={styles.webview} />
+   <Button title="back" onPress={()=>seturi('empty')} />
+   </View>
+    
     )
   }
 
@@ -97,13 +128,6 @@ console.log(e)
 
 
 const styles=StyleSheet.create({
-    item:{
-        marginLeft:2,
-        marginBottom:3,
-        backgroundColor:"rgb(100,23,222)",
-        padding:10,
-        maxWidth:'50%'
-        },
         description:{
           color:"#fff",
           fontFamily:"serif",
@@ -118,6 +142,11 @@ const styles=StyleSheet.create({
           justifyContent:'space-between',
           alignItems:"flex-end",
           padding:1
+        },
+        webview:{
+          width:"100%",
+          height:"95%",
+         backgroundColor:"white"
         }
         
 })

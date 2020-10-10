@@ -1,11 +1,17 @@
 import React from 'react'
-import { View,Text, Button } from 'react-native';
+import { View,Text, Button, StyleSheet} from 'react-native';
 
 export default function settings() {
     return (
-        <View>
-        <Button title="set drawer" />
-            <Text>setting</Text>
+        <View style={styles.container}>
+        
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container:{
+      width:"100%",
+      height:"100%"
+    }
+})

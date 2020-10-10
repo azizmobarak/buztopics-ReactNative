@@ -3,7 +3,8 @@ import { View,Text } from 'native-base'
 import Listposts from './List_posts';
 import {api} from "../api.config";
 import {StyleSheet} from 'react-native';
-import {Avatar} from 'react-native-paper';
+import {ActivityIndicator, Avatar} from 'react-native-paper';
+import { BannerAd } from '../ads';
 
 export default function Health() {
 
@@ -38,12 +39,12 @@ export default function Health() {
 
     return (
         <View style={styles.container}>
-            <Avatar.Image style={{backgroundColor:"transparent"}} source={require('../assets/health.png')}/>
-            <View style={{marginBottom:"15%"}}>
+       <BannerAd/>
+            <View style={{marginBottom:"15%",width:"100%",height:"100%"}}>
             {isLoading==true?
        <View 
         style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <Text style={{color:"blue",fontSize:22}}>Please wait ...</Text>
+        <ActivityIndicator size="large" />
       </View> 
       :
      <Listposts data={data} location={"health"} />}
@@ -55,6 +56,7 @@ export default function Health() {
 
 const styles = StyleSheet.create({
     container:{
+      width:"100%",
         flex: 1,
         alignItems:"center",
         padding:2

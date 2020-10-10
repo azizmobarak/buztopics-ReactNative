@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View,Text,StyleSheet, Platform } from 'react-native'
-import { TextInput } from 'react-native-paper';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
+import {useTheme} from '@react-navigation/native'
 import Listposts from './List_posts';
+import { BannerAd } from '../ads';
 
 const Endpoint="https://newsapi.org/v2/everything?q=";
 
@@ -9,8 +11,9 @@ export default function Search({route,navigation}) {
     const from = route.params.from;
 
     const [data,setdata]=useState([]);
-    const [key,setkey]=useState('');
+    const [key,setkey]=useState('new');
     const [isLoading,setLoading]=useState(false);
+    const {colors} = useTheme();
 
 useEffect(()=>{
     setLoading(true)
@@ -42,22 +45,51 @@ useEffect(()=>{
         return (
             <View style={styles.container_from_top}>
             <View style={styles.view_container}>
-            <TextInput value={key} onChangeText={setkey} style={styles.search_inp} placeholder="Search for something!" />
+            <BannerAd/>
+            <TextInput 
+             onChangeText={setkey}
+              placeholder="Search for something!"
+              style={{
+          backgroundColor:colors.background,
+           height:40,
+        width:"80%",
+        borderColor:"black",
+        color:colors.text
+              }} 
+             
+               />
             </View>
-            <View style={{marginTop:20}}>
-            <Listposts data={data} location="search" />
+            <View style={{marginTop:20,width:"100%",height:"100%"}}>
+            {isLoading==true?
+       <View 
+        style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <ActivityIndicator size="large" />
+      </View> 
+      :
+     <Listposts data={data} location={"usa"} />}
+            <BannerAd/>
             </View>
             </View>
         )
     }else{
         return (
             <View style={styles.container_from_top}>
-            <TextInput value={key} onChangeText={setkey} style={styles.search_inp} placeholder="Search for something!" />
-            <View style={{padding:2}}>
+            <BannerAd/>
+            <TextInput  
+            onChangeText={setkey}
+            style={{
+          backgroundColor:colors.background,
+           height:40,
+        width:"80%",
+        borderColor:"black",
+        color:colors.text
+              }}
+              placeholder="Search for something!" />
+            <View style={{padding:2,width:"100%",height:"100%"}}>
             {isLoading==true?
        <View 
         style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+        <ActivityIndicator size="large" />
       </View> 
       :
      <Listposts data={data} location={"usa"} />}
@@ -70,19 +102,17 @@ useEffect(()=>{
 
 const styles=StyleSheet.create({
     container_from_top:{
-        marginTop:20,
+        marginTop:0,
         flex:1,
-        alignItems:"center"
+        alignItems:"center",
+        width:"100%"
     },
     view_container:{
-        marginTop:Platform.OS==="android"? 20 : 0,
+        marginTop:Platform.OS==="android"? 0 : 0,
         alignItems:"center",
         width:"100%"
     },
     search_inp:{
-        backgroundColor:"#fff",
-        height:40,
-        width:"80%",
-        borderColor:"black",
+        
     }
 })

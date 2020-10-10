@@ -1,5 +1,13 @@
+const getRandLetter=()=>{
+    var word = "abcdefghijklmnopqrstvwxyz";
+    var number = parseInt(Math.random()*25);
+    var letter= word.substring(number,number+1);
+    return letter;
+}
+
+
 export const api = {
-    all:"https://newsapi.org/v2/everything?q=a&apiKey=099a9e2e1ec54fbf82af805493521962",
+    all:"https://newsapi.org/v2/everything?q="+getRandLetter()+"&apiKey=099a9e2e1ec54fbf82af805493521962",
     usa : "http://newsapi.org/v2/top-headlines?country=us&apiKey=099a9e2e1ec54fbf82af805493521962",
     fr : 'http://newsapi.org/v2/top-headlines?country=fr&apiKey=099a9e2e1ec54fbf82af805493521962',
     sport : "https://newsapi.org/v2/everything?q=sport&apiKey=099a9e2e1ec54fbf82af805493521962",
@@ -7,7 +15,5 @@ export const api = {
     eco : "https://newsapi.org/v2/everything?q=economy&apiKey=099a9e2e1ec54fbf82af805493521962",
     money:"https://newsapi.org/v2/everything?q=moeny&apiKey=099a9e2e1ec54fbf82af805493521962"
 }
-
-
 
 

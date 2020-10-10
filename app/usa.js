@@ -3,7 +3,8 @@ import { View,Text } from 'native-base'
 import Listposts from './List_posts';
 import {api} from "../api.config";
 import {StyleSheet,ProgressBarAndroid} from 'react-native';
-import {Avatar} from 'react-native-paper';
+import {ActivityIndicator, Avatar} from 'react-native-paper';
+import { BannerAd } from '../ads';
 
 export default function USA() {
 
@@ -38,12 +39,12 @@ export default function USA() {
 
     return (
         <View style={styles.container}>
-            <Avatar.Image source={require('../assets/us.png')}/>
-            <View style={{marginBottom:"15%"}}>
+            <View style={{marginBottom:"15%",width:"100%",height:"100%"}}>
+            <BannerAd/>
             {isLoading==true?
        <View 
         style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+        <ActivityIndicator size="large" />
       </View> 
       :
      <Listposts data={data} location={"usa"} />}
@@ -55,6 +56,7 @@ export default function USA() {
 
 const styles = StyleSheet.create({
     container:{
+        width:"100%",
         flex: 1,
         alignItems:"center",
         padding:2

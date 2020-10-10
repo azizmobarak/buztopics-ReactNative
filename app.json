@@ -17,10 +17,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
+      "config":{
+        "googleMobileAdsAppId":"ca-app-pub-4463394879450619~5398297226"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android":{
+      "config":{
+        "googleMobileAdsAppId":"ca-app-pub-4463394879450619~5398297226"
+      }
     }
   }
 }

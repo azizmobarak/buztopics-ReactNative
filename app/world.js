@@ -3,14 +3,15 @@ import { View,Text, Picker } from 'native-base'
 import Listposts from './List_posts';
 import {api} from "../api.config";
 import {StyleSheet} from 'react-native';
-import {Avatar} from 'react-native-paper';
+import {ActivityIndicator, Avatar, useTheme} from 'react-native-paper';
+import { BannerAd } from '../ads';
 
 export default function World() {
 
     const [data,setdata]=useState([]);
     const [country,setcountry]=useState('fr');
     const [isLoading,setLoading]=useState(false);
-
+    const {colors}=useTheme();
     useEffect(()=>{
       //get data 
       setLoading(true);
@@ -39,9 +40,10 @@ export default function World() {
 
     return (
         <View style={styles.container}>
+         <BannerAd/>
            <Picker
            selectedValue={country}
-           style={{width:"80%",height:40,color:"black"}}
+           style={{width:"80%",height:40,color:colors.text}}
            onValueChange={(value,index)=>setcountry(value)}
            >
           <Picker.Item label="United state"  value="us"/>
@@ -53,12 +55,12 @@ export default function World() {
           <Picker.Item label="Russia"  value="rs" />
           <Picker.Item label="sweden"  value="se" />
            </Picker>
-            <View style={{marginBottom:"15%"}}>
+            <View style={{marginBottom:"15%",width:"100%",height:"100%"}}>
           {isLoading==true?
        <View 
         style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
-      </View> 
+        <ActivityIndicator size="large"/>
+       </View> 
       :
      <Listposts data={data} location={"usa"} />}
             </View>
@@ -69,7 +71,9 @@ export default function World() {
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1,
+      width:"100%",
+      flex: 1,
+      justifyContent:"flex-start",
         alignItems:"center",
         padding:2
     },

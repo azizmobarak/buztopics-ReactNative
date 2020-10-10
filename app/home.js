@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Modal,Alert,TouchableHighlight  } from 'react-native';
+import { StyleSheet, Text, View,TouchableHighlight  } from 'react-native';
 import Settings from './settings';
 import Search from './search';
-import { Avatar } from 'react-native-paper';
+import { ActivityIndicator, Avatar } from 'react-native-paper';
 import Contactus from './contactus';
 import Loved from './loved';
 import LisPosts from './List_posts';
@@ -10,15 +10,16 @@ import Developer from './developer';
 import USA from './usa';
 import Health from './health';
 import Economy from './economy';
-
-import {createStackNavigator, HeaderTitle} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
+import {useTheme} from '@react-navigation/native';
 import { api } from '../api.config';
 import Sport from './sport';
 import World from './world';
 const stack = createStackNavigator();
+import {BannerAd} from '../ads';
+
 
 export default function Home({navigation}){
-const [show_modal,set_show_modal]=useState(false);
 
     return (
       <stack.Navigator 
@@ -27,7 +28,7 @@ const [show_modal,set_show_modal]=useState(false);
          headerMode="screen"
          screenOptions={
            
-           {headerTitle:<Text style={{color:"rgb(100,23,222)"}}>WhatTheySay</Text>,
+           {headerTitle:<Text style={{color:"white"}}>WhatTheySay</Text>,
            headerLeft:()=>(
                <TouchableHighlight style={styles.menu_btn} underlayColor="white" onPress={()=>navigation.openDrawer()}>
                  <Avatar.Icon icon="menu" size={30} />
@@ -35,13 +36,13 @@ const [show_modal,set_show_modal]=useState(false);
            ),
            headerRight:()=>(
              <TouchableHighlight style={styles.menu_btn} underlayColor="white" onPress={()=>navigation.navigate('Search',{from:"top"})}>
-                 <Avatar.Image style={{backgroundColor:"white"}} source={require('../assets/marketing.png')} size={30} />
+                 <Avatar.Image style={{backgroundColor:"white",color:"white"}} source={require('../assets/marketing.png')} size={30} />
                </TouchableHighlight>
            )
            }
          }
          >
-          <stack.Screen name="Home" component={Main}/>
+          <stack.Screen name="Home" component={Main} />
           <stack.Screen name="Settings" component={Settings}
           options={
             {
@@ -112,7 +113,7 @@ const Main=({navigation})=>{
 
   const [data,setdata]=useState([]);
  const [isLoading,setLoading]=useState(false);
-
+const {colors}=useTheme();
 
 useEffect(()=>{
   setLoading(true);
@@ -142,10 +143,18 @@ useEffect(()=>{
 
 
 return(
-    <View style={styles.container}>
-     <View style={styles.home_top}>
-
-     <View style={styles.row}>
+    <View style={{
+    flex:1,
+    backgroundColor:colors.background,
+    }}>
+     <View style={{
+    flex:0.3,
+    backgroundColor:colors.card,
+    justifyContent:"flex-start",
+    alignItems:"center",
+     }}>
+     <BannerAd/>
+   <View style={styles.row}>
       <View style={styles.column}>
       {avatar_touchable(require('../assets/us.png'),'usa News',{navigation},'USA')}
       </View>
@@ -153,7 +162,6 @@ return(
       {avatar_touchable(require('../assets/profits.png'),'Economy $',{navigation},'Economy')}
       </View>
      </View>
-
      <View style={styles.row}>
       <View style={styles.column}>
       {avatar_touchable(require('../assets/glasses.png'),"Let's Search",{navigation},'Search')}
@@ -168,7 +176,7 @@ return(
      {isLoading==true?
        <View 
         style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+        <ActivityIndicator size="large" />
       </View> 
       :
      <LisPosts data={data} location={"home"} />}
@@ -183,21 +191,11 @@ const styles = StyleSheet.create({
     menu_btn:{
       padding:10,
     },
-  container:{
-    flex:1,
-    backgroundColor:"lightgray",
-  },
   title:{
     color:"white",
     fontSize:30,
     fontFamily:"serif",
     alignSelf:"center"
-  },
-  home_top:{
-    flex:0.4,
-    backgroundColor:"rgb(100,23,222)",
-    justifyContent:"center",
-    alignItems:"center",
   },
   home_bottom:{
     flex:1,
@@ -206,11 +204,12 @@ const styles = StyleSheet.create({
     padding:10
   },
   row:{
-    flex:0.2,
+    flex:0.4,
     flexDirection:"row",
-    padding:2,
+    padding:8,
     justifyContent:"space-between",
     width:"80%",
+    marginBottom:5
   },
   column:{
     padding:4,
@@ -218,7 +217,8 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:"center",
     alignItems:"center",
-    marginLeft:3
+    marginLeft:3,
+    height:30,
   },
   inside_col_avatar:{
     flex:1,

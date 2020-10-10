@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { View,Text,FlatList,TouchableHighlight ,StyleSheet,Image,AsyncStorage, Alert, ToastAndroid} from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { BannerAd } from '../ads';
 import Listposts from './List_posts';
 
 export default function Loved() {
@@ -25,6 +27,7 @@ export default function Loved() {
   
   return (
     <View style={{flex:1,alignItems:"center"}}>
+    <BannerAd/>
            <View style={styles.topbar}>
            <Text style={styles.title}>You liked this<Icon name="heart" size={24} color="red" /> </Text> 
            <TouchableHighlight onPress={()=>deleteList()}>
@@ -67,7 +70,7 @@ useEffect(()=>{
       isLoading==true?
        <View 
         style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-        <Text style={{color:"blue",fontSize:22}}>Please wait  ...</Text>
+        <ActivityIndicator size="large" />
       </View>
       :
       list.length==0?
