@@ -17,10 +17,10 @@ export default function Developer() {
         fontSize:16,
         fontFamily:"serif"
         }}>
-            <Text>
+            <Text style={{color:colors.text}}>
                 this app created by Aziz Mobarak
             </Text>
-            <Text>
+            <Text style={{color:colors.text}}>
                 Full stack web & mobile developer .
             </Text>
             <View
@@ -32,7 +32,7 @@ export default function Developer() {
                 alignItems:"center"
             }}
             >
-                <Text>
+                <Text  style={{color:colors.text}}>
                     Github :
                 </Text>
                 <Text style={{color:colors.link}}>
@@ -48,7 +48,7 @@ export default function Developer() {
                 alignItems:"center"
             }}
             >
-                <Text>
+                <Text style={{color:colors.text}}>
                     linkden:
                 </Text>
                 <Text style={{color:colors.link}}>
@@ -64,7 +64,7 @@ export default function Developer() {
                 alignItems:"center"
             }}
             >
-                <Text>
+                <Text style={{color:colors.text}}>
                     Instagram:
                 </Text>
                 <Text style={{color:colors.link}}>
@@ -81,7 +81,7 @@ export default function Developer() {
                 alignItems:"center"
             }}
             >
-                <Text>
+                <Text style={{color:colors.text}}>
                     Used technologies : 
                 </Text>
                 <Text style={{color:colors.link}}>
@@ -101,7 +101,8 @@ export default function Developer() {
             >
                 <Text style={{
                     fontWeight:"bold",
-                    fontSize:17
+                    fontSize:17,
+                    color: colors.text
                 }}>
                     All right reserved - 2020 
                 </Text>

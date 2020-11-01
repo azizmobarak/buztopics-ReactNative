@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "buztopicapp",
-    "slug": "buztopicapp",
+    "name": "whattheysay",
+    "slug": "whattheysay",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,17 +19,19 @@
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
-      "config":{
-        "googleMobileAdsAppId":"ca-app-pub-4463394879450619~5398297226"
-      }
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-4463394879450619~5398297226"
+      },
+      "bundleIdentifier": "com.whattheysay"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "android":{
-      "config":{
-        "googleMobileAdsAppId":"ca-app-pub-4463394879450619~5398297226"
-      }
+    "android": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-4463394879450619~5398297226"
+      },
+      "package": "com.whattheysay"
     }
   }
 }

@@ -48,7 +48,7 @@ var counter =0;
       <View
       style={{
         marginLeft:2,
-        marginBottom:3,
+        marginBottom:100,
         backgroundColor:colors.card,
         padding:10,
         maxWidth:'50%'
@@ -61,6 +61,11 @@ var counter =0;
       <Text style={styles.description}>{item.description}</Text>
       </View>
     </TouchableHighlight>
+      <View style={{
+        flex:1,
+        flexDirection:'column',
+        width:'100%'
+      }}>
       <View style={styles.item_bottom_bar}>
         <TouchableHighlight
         onPress={()=>shareTo(item.description,item.url)}
@@ -76,6 +81,7 @@ var counter =0;
           <Icon name="heart" size={24} color="red"/>
         }
         </TouchableHighlight>
+      </View>
       </View>
     </View>
      )}}
@@ -122,7 +128,7 @@ try{
     ToastAndroid.show("Item added", ToastAndroid.SHORT);
    }
 }catch(e){
-console.log(e)
+ToastAndroid.show("error try again !", ToastAndroid.SHORT);
 }
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {ToastAndroid} from 'react-native';
 import {
     AdMobBanner,
     AdMobInterstitial,
@@ -8,7 +9,7 @@ import {
   } from 'expo-ads-admob';
   
 const onError=(text)=>{
-  console.log(text);
+  ToastAndroid.show(text, ToastAndroid.SHORT);
 }
 
 export const BannerAd=()=>(
@@ -52,10 +53,3 @@ export const BannerAd2=()=>(
        onDidFailToReceiveAdWithError={(e)=>onError(e)}
       />
       );
-
-  /*  
-await setTestDeviceIDAsync('EMULATOR')
-await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712'); // Test ID, Replace with your-admob-unit-id
-await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
-await AdMobInterstitial.showAdAsync();
-*/

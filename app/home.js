@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View,TouchableHighlight  } from 'react-native';
+import { StyleSheet, Text, View,TouchableHighlight, StatusBar  } from 'react-native';
 import Settings from './settings';
 import Search from './search';
 import { ActivityIndicator, Avatar } from 'react-native-paper';
@@ -153,6 +153,7 @@ return(
     justifyContent:"flex-start",
     alignItems:"center",
      }}>
+     <StatusBar backgroundColor={colors.card} />
      <BannerAd/>
    <View style={styles.row}>
       <View style={styles.column}>

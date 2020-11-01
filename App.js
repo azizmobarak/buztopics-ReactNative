@@ -59,9 +59,8 @@ useEffect(()=>{
       <drawer.Screen name="Home"
        component={Home}
          options={
-           {title:"BuzTopics",}
+           {title:"Whattheysay"}
          }
-  
        />
       </drawer.Navigator>
   </NavigationContainer>
